@@ -1,0 +1,298 @@
+import React, { useState, useEffect } from 'react';
+import styles from '../styles/WelcomeOnboarding.module.css';
+import char1Preview from '/assets/characters/Char1/Animation/walkdown_ch1.png';
+import char2Preview from '/assets/characters/Char2/Animation/walkdown_ch2.png';
+import char3Preview from '/assets/characters/Char3/Animation/walkdown_ch3.png';
+import char4Preview from '/assets/characters/Char4/Animation/walkdown_ch4.png';
+// Character icons from Cloudinary
+const characterIcon = 'https://res.cloudinary.com/daegpuoss/image/upload/v1770438516/character_kwtv10.png';
+const characterIcon1 = 'https://res.cloudinary.com/daegpuoss/image/upload/v1770438516/character1_a6sw9d.png';
+const characterIcon3 = 'https://res.cloudinary.com/daegpuoss/image/upload/v1770438516/character3_bavsbw.png';
+const characterIcon4 = 'https://res.cloudinary.com/daegpuoss/image/upload/v1770438516/character4_y9owfi.png';
+import { useOnBoardUsername } from '../services/setUsername';
+import useAuth from '../hooks/useAxios';
+
+const WelcomeOnboarding = ({ onComplete }) => {
+  const [currentStep, setCurrentStep] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [selectedCharacter, setSelectedCharacter] = useState(0);
+  const [username, setUsername] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [usernameError, setUsernameError] = useState('');
+  const [fullNameError, setFullNameError] = useState('');
+
+  const onBoardUsername = useOnBoardUsername();
+  const { user, setUser } = useAuth();
+
+  // Character options (you can add more character sprites here)
+  const characters = [
+    { id: 0, name: 'Nova', sprite: char1Preview, icon: characterIcon1, color: '#ff6b6b' },
+    { id: 1, name: 'Echo', sprite: char2Preview, icon: characterIcon, color: '#4ecdc4' },
+    { id: 2, name: 'Flux', sprite: char3Preview, icon: characterIcon3, color: '#95e1d3' },
+    { id: 3, name: 'Zephyr', sprite: char4Preview, icon: characterIcon4, color: '#8aa6ff' },
+  ];
+
+  const steps = [
+    {
+      type: 'character-selection',
+      message: "First, let's choose your look. You can switch this up later, too.",
+      progress: 33
+    },
+    {
+      type: 'username-input',
+      message: "Looking good! What's your full name?",
+      progress: 66
+    },
+    {
+      type: 'welcome',
+      message: "Nice to meet you {username}. Now let's find something to learn!",
+      progress: 100
+    }
+  ];
+
+  useEffect(() => {
+    // Animate progress bar
+    const timer = setTimeout(() => {
+      setProgress(steps[currentStep].progress);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [currentStep]);
+
+  const handleContinue =  async (e) => {
+    e.preventDefault();
+    // Validate username on step 1
+    if (currentStep === 1) {
+      if (!username.trim()) {
+        setUsernameError('Please enter a username');
+        return;
+      }
+
+      const trimmedFullName = fullName.trim();
+      if (!trimmedFullName) {
+        setFullNameError('Please enter your full name');
+        return;
+      }
+
+      if (!/^[A-Za-z ]+$/.test(trimmedFullName)) {
+        setFullNameError('Full name must only contain letters and spaces');
+        return;
+      }
+
+      const nameParts = trimmedFullName.split(/\s+/).filter(Boolean);
+      if (nameParts.length < 2) {
+        setFullNameError('Please enter your first and last name');
+        return;
+      }
+
+      try {
+        // Save to backend
+        const res = await onBoardUsername(username, characters[selectedCharacter].id, fullName);
+        if (res.success) {
+          localStorage.setItem("username", username);
+          localStorage.setItem("needsUsername", "false");
+          localStorage.setItem('selectedCharacter', characters[selectedCharacter].id);
+          localStorage.setItem('selectedCharacterIcon', characters[selectedCharacter].icon);
+
+          setUser((prev) => ({
+            ...(prev || user || {}),
+            username,
+            full_name: trimmedFullName,
+            character_id: characters[selectedCharacter].id,
+          }));
+          window.dispatchEvent(new CustomEvent('characterUpdated', {
+            detail: { characterIcon: characters[selectedCharacter].icon }
+          }));
+        }
+      } catch (error) {
+        setUsernameError(error.message || "Username already taken or invalid");
+        return;
+      }
+      setUsernameError('');
+      setFullNameError('');
+    }
+
+    if (currentStep < steps.length - 1) {
+      setCurrentStep(currentStep + 1);
+    } else {
+      onComplete();
+    }
+  };
+
+  const handleBack = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1);
+      setUsernameError('');
+      setFullNameError('');
+    }
+  };
+
+  const handleCharacterChange = (direction) => {
+    if (direction === 'next') {
+      setSelectedCharacter((prev) => (prev + 1) % characters.length);
+    } else {
+      setSelectedCharacter((prev) => (prev - 1 + characters.length) % characters.length);
+    }
+  };
+
+  const getMessage = () => {
+    let message = steps[currentStep].message;
+    if (currentStep === 2 && username) {
+      message = message.replace('{username}', username);
+    }
+    return message;
+  };
+
+  return (
+    <div className={styles.overlay}>
+      <div className={styles.container}>
+        {/* Progress Bar */}
+        <div className={styles.progressSection}>
+          <button 
+            className={styles.backButton} 
+            onClick={handleBack}
+            disabled={currentStep === 0}
+          >
+            ←
+          </button>
+          <div className={styles.progressBar}>
+            <div 
+              className={styles.progressFill} 
+              style={{ width: `${progress}%` }}
+            ></div>
+          </div>
+        </div>
+
+        {/* Computer Mascot with Speech Bubble */}
+        <div className={styles.mascotSection}>
+          <div className={styles.mascot}>
+            <img 
+              src="https://res.cloudinary.com/daegpuoss/image/upload/v1767930117/COMPUTER_cejwzd.png" 
+              alt="Computer Mascot" 
+              className={styles.computerImage}
+            />
+          </div>
+          <div className={styles.speechBubble}>
+            <div className={styles.speechArrow}></div>
+            <p>{getMessage()}</p>
+          </div>
+        </div>
+
+        {/* Main Content Area */}
+        <div className={styles.mainContent}>
+          {/* Character Selection */}
+          {currentStep === 0 && (
+            <div className={styles.characterSelection}>
+              <button 
+                className={styles.arrowButton}
+                onClick={() => handleCharacterChange('prev')}
+              >
+                ‹
+              </button>
+              <div className={styles.characterDisplay}>
+                <div className={styles.characterSprite}>
+                  <div className={styles.spriteFrame}>
+                    <img
+                      src={characters[selectedCharacter].sprite}
+                      className={styles.spriteImage}
+                      style={{ transform: 'translateX(-128px)' }}
+                    />
+                  </div>
+                </div>
+                <div className={styles.characterShadow}></div>
+              </div>
+              <button 
+                className={styles.arrowButton}
+                onClick={() => handleCharacterChange('next')}
+              >
+                ›
+              </button>
+            </div>
+          )}
+
+          {/* Username Input */}
+          {currentStep === 1 && (
+            <div className={styles.usernameSection}>
+              <div className={styles.characterDisplay}>
+                <div className={styles.characterSprite}>
+                  <div className={styles.spriteFrame}>
+                    <img
+                      src={characters[selectedCharacter].sprite}
+                      className={styles.spriteImage}
+                      style={{ transform: 'translateX(-128px)' }}
+                    />
+                  </div>
+                </div>
+                <div className={styles.characterShadow}></div>
+              </div>
+              <div className={styles.inputWrapper}>
+                <input
+                  type="text"
+                  className={`${styles.usernameInput} ${usernameError ? styles.error : ''}`}
+                  placeholder="Enter username"
+                  value={username}
+                  onChange={(e) => {
+                    setUsername(e.target.value);
+                    setUsernameError('');
+                  }}
+                  maxLength={20}
+                  autoFocus
+                />
+                {usernameError && (
+                  <div className={styles.errorMessage}>
+                    <span className={styles.errorIcon}>⚠</span>
+                    {usernameError}
+                  </div>
+                )}
+              </div>
+              <div className={styles.inputWrapper}>
+                <input
+                  type="text"
+                  className={`${styles.usernameInput} ${fullNameError ? styles.error : ''}`}
+                  placeholder="Enter full name"
+                  value={fullName}
+                  onChange={(e) => {
+                    setFullName(e.target.value);
+                    setFullNameError('');
+                  }}
+                  maxLength={30}
+                />
+                {fullNameError && (
+                  <div className={styles.errorMessage}>
+                    <span className={styles.errorIcon}>⚠</span>
+                    {fullNameError}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Welcome */}
+          {currentStep === 2 && (
+            <div className={styles.welcomeSection}>
+              <div className={styles.characterDisplay}>
+                <div className={styles.characterSprite}>
+                  <div className={styles.spriteFrame}>
+                    <img
+                      src={characters[selectedCharacter].sprite}
+                      className={styles.spriteImage}
+                      style={{ transform: 'translateX(-128px)' }}
+                    />
+                  </div>
+                </div>
+                <div className={styles.characterShadow}></div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Continue Button */}
+        <button className={styles.continueButton} onClick={handleContinue}>
+          Continue
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default WelcomeOnboarding;

@@ -1,0 +1,301 @@
+/* JavaScript Course Page */
+.javascript-course-page {
+  width: 100%;
+  color: white;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #0f172a;
+  min-height: 100vh;
+}
+
+/* Hero Section */
+.javascript-hero {
+  position: relative;
+  width: 100%;
+  min-height: 350px;
+  background: url('https://res.cloudinary.com/daegpuoss/image/upload/v1766925754/javascript_esc21m.gif') center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 4rem;
+  overflow: hidden;
+}
+
+.javascript-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6));
+  z-index: 1;
+}
+
+.javascript-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+  text-align: center;
+}
+
+.javascript-hero-title {
+  font-family: 'Jersey 25', sans-serif;
+  font-size: 4.5rem;
+  color: #FFD700;
+  margin-bottom: 1rem;
+  text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.9);
+  letter-spacing: 2px;
+}
+
+.javascript-hero-description {
+  font-size: 1.2rem;
+  color: #ffffff;
+  line-height: 1.6;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+  margin-bottom: 2rem;
+}
+
+.exercise-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+.status-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: block;
+}
+
+.status-icon-wrap {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-icon.locked {
+  color: #64748b;
+}
+
+.status-icon.available {
+  color: #3b82f6;
+}
+
+.status-icon.completed {
+  width: 50px;
+  height: 50px;
+  /* remove margin/padding that affects container */
+}
+
+/* Main Content Layout */
+.javascript-content {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  background: #0f172a;
+}
+
+/* Module Icon - JavaScript Yellow */
+.javascript-hero-badge {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  justify-content: center;
+}
+
+.javascript-badge-text {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 0.4rem 1rem;
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Completed Module Icon - Checked State */
+.javascript-course-page .module-icon.completed {
+  background: rgba(255, 215, 0, 0.3);
+  border: 2px solid #FFD700;
+  position: relative;
+}
+
+.javascript-course-page .module-icon.completed::after {
+  content: '✓';
+  position: absolute;
+  font-size: 1.2rem;
+  color: #FFD700;
+  font-weight: bold;
+}
+
+/* Exercise Item - JavaScript Yellow Border */
+.javascript-course-page .exercise-item.available {
+  border-left: 3px solid #FFD700;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .javascript-content {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+  }
+
+  .course-badges-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 75px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    justify-content: center;
+  }
+
+  .javascript-course-badge {
+    flex: 0 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .javascript-hero {
+    padding: 2rem 1.5rem;
+    min-height: 300px;
+  }
+
+  .javascript-hero-title {
+    font-size: 3rem;
+  }
+
+  .javascript-hero-description {
+    font-size: 1.2rem;
+  }
+
+  .javascript-content {
+    padding: 2rem 1rem;
+  }
+
+  .module-title {
+    font-size: 1.4rem;
+  }
+}
+
+/* Course Badges Styles */
+.course-badges-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.javascript-course-badge {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.javascript-course-badge:hover {
+  transform: scale(1.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 520px) {
+  .javascript-badge-text {
+    font-size: 0.62rem;
+    padding: 0.32rem 0.75rem;
+  }
+
+  .javascript-hero-title {
+    font-size: 2.35rem;
+  }
+
+  .javascript-hero-description {
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
+
+  .javascript-course-page .module-header {
+    padding: 1rem;
+  }
+
+  .javascript-course-page .module-title {
+    font-size: 1.18rem;
+  }
+
+  .javascript-course-page .module-description {
+    font-size: 0.88rem;
+    line-height: 1.45;
+    margin: 1rem 0;
+  }
+
+  .javascript-course-page .exercise-item {
+    padding: 0.8rem 1rem;
+  }
+
+  .javascript-course-page .exercise-number {
+    font-size: 0.68rem;
+  }
+
+  .javascript-course-page .exercise-name {
+    font-size: 0.92rem;
+  }
+
+  .javascript-course-page .start-btn {
+    font-size: 0.9rem;
+    padding: 0.42rem 0.95rem;
+  }
+
+  .javascript-course-page .progress-title {
+    font-size: 1.05rem;
+    margin-bottom: 1rem;
+  }
+
+  .javascript-course-page .progress-label span,
+  .javascript-course-page .progress-value {
+    font-size: 0.82rem;
+  }
+
+  .course-badges-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    overflow-x: visible;
+    padding-bottom: 4px;
+    justify-content: center;
+  }
+
+  .javascript-course-badge {
+    width: 52px;
+    height: 52px;
+    flex: 0 0 auto;
+  }
+}
+
+@media (min-width: 521px) and (max-width: 1024px) {
+  .course-badges-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 75px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    justify-content: center;
+  }
+
+  .javascript-course-badge {
+    flex: 0 0 auto;
+  }
+}
+
+/* Total Quiz Progress Item - Purple Color */
+.javascript-course-page .progress-item:nth-child(2) .progress-icon {
+  background: linear-gradient(135deg, #9333ea, #a855f7);
+}

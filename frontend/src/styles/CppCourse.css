@@ -1,0 +1,271 @@
+/* C++ Course Page */
+.cpp-course-page {
+  width: 100%;
+  color: white;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #0f172a;
+  min-height: 100vh;
+}
+
+/* Hero Section */
+.cpp-hero {
+  position: relative;
+  width: 100%;
+  min-height: 350px;
+  background: url('https://res.cloudinary.com/daegpuoss/image/upload/v1766925753/c_atz4sx.gif') center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 4rem;
+  overflow: hidden;
+}
+
+.cpp-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6));
+  z-index: 1;
+}
+
+.cpp-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+  text-align: center;
+}
+
+.cpp-hero-title {
+  font-family: 'Jersey 25', sans-serif;
+  font-size: 4.5rem;
+  color: #5B8FB9;
+  margin-bottom: 1rem;
+  text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.9);
+  letter-spacing: 2px;
+}
+
+.cpp-hero-description {
+  font-size: 1.2rem;
+  color: #ffffff;
+  line-height: 1.6;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+  margin-bottom: 2rem;
+}
+
+/* Main Content Layout */
+.cpp-content {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  background: #0f172a;
+}
+
+/* Module Icon - C++ Blue */
+.cpp-hero-badge {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  justify-content: center;
+}
+
+.cpp-badge-text {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 0.4rem 1rem;
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Status Icons */
+.status-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.status-icon.completed {
+  width: 50px;
+  height: 50px;
+  color: #5B8FB9;
+}
+
+.status-icon.locked {
+  color: #64748b;
+}
+
+.status-icon.available {
+  color: #3b82f6;
+}
+
+/* Exercise Item - C++ Blue Border */
+.cpp-course-page .exercise-item.available {
+  border-left: 3px solid #5B8FB9;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .cpp-content {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+  }
+
+  .course-badges-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 75px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    justify-content: center;
+  }
+
+  .cpp-course-badge {
+    flex: 0 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .cpp-hero {
+    padding: 2rem 1.5rem;
+    min-height: 300px;
+  }
+
+  .cpp-hero-title {
+    font-size: 3rem;
+  }
+
+  .cpp-hero-description {
+    font-size: 1.2rem;
+  }
+
+  .cpp-content {
+    padding: 2rem 1rem;
+  }
+
+  .module-title {
+    font-size: 1.4rem;
+  }
+}
+
+/* Course Badges Styles */
+.course-badges-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.cpp-course-badge {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.cpp-course-badge:hover {
+  transform: scale(1.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 520px) {
+  .cpp-badge-text {
+    font-size: 0.62rem;
+    padding: 0.32rem 0.75rem;
+  }
+
+  .cpp-hero-title {
+    font-size: 2.35rem;
+  }
+
+  .cpp-hero-description {
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
+
+  .cpp-course-page .module-header {
+    padding: 1rem;
+  }
+
+  .cpp-course-page .module-title {
+    font-size: 1.18rem;
+  }
+
+  .cpp-course-page .module-description {
+    font-size: 0.88rem;
+    line-height: 1.45;
+    margin: 1rem 0;
+  }
+
+  .cpp-course-page .exercise-item {
+    padding: 0.8rem 1rem;
+  }
+
+  .cpp-course-page .exercise-number {
+    font-size: 0.68rem;
+  }
+
+  .cpp-course-page .exercise-name {
+    font-size: 0.92rem;
+  }
+
+  .cpp-course-page .start-btn {
+    font-size: 0.9rem;
+    padding: 0.42rem 0.95rem;
+  }
+
+  .cpp-course-page .progress-title {
+    font-size: 1.05rem;
+    margin-bottom: 1rem;
+  }
+
+  .cpp-course-page .progress-label span,
+  .cpp-course-page .progress-value {
+    font-size: 0.82rem;
+  }
+
+  .course-badges-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    overflow-x: visible;
+    padding-bottom: 4px;
+    justify-content: center;
+  }
+
+  .cpp-course-badge {
+    width: 52px;
+    height: 52px;
+    flex: 0 0 auto;
+  }
+}
+
+@media (min-width: 521px) and (max-width: 1024px) {
+  .course-badges-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 75px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    justify-content: center;
+  }
+
+  .cpp-course-badge {
+    flex: 0 0 auto;
+  }
+}
+
+/* Total Quiz Progress Item - Purple Color */
+.cpp-course-page .progress-item:nth-child(2) .progress-icon {
+  background: linear-gradient(135deg, #9333ea, #a855f7);
+}
